@@ -1,82 +1,120 @@
-// Milestone 1 
-// Definire un array di oggetti; ogni oggetto rappresenta un gatto, che è caratterizzato da: nome, età, colore e sesso.
-// Tramite il forEach(), stampare in pagina tutti i gattini, ciascuno con il proprio colore e il proprio nome.
-
-// Milestone 2 
-// Dividere i gatti in due contenitori distinti in base al sesso e aggiungere a fianco di ogni gattino un fiocco colorato di rosa, se femmina, o di blu, se maschio. Il colore del fiocco deve essere più tenue se il gatto è più giovane, più scuro se il gatto è più vecchio.
-
-// Milestone 3 
-// Creare un nuovo array con prima tutti i gattini femmina e poi tutti i gattini maschio, inserendo solamente nome, colore e opacità del fiocco per ogni gatto.
-
-
-
-// Milestone 1
-
+document.getElementById("container").innerHTML += "Milestone 1<br/>";
 const cats = [
     {
-        nome : 'Pippo',
-        eta : 1,
-        colore : '#ff0000',
-        sesso : 'male'
+        name : "Pippo",
+        age : 4,
+        color: "#F75C1E",
+        gender: "male"
     },
     {
-        nome : 'Pluto',
-        eta : 4,
-        colore : '#ff00ff',
-        sesso : 'male'
+        name : "Pluto",
+        age : 3.5,
+        color: "#F75C1E",
+        gender: "female"
     },
     {
-        nome : 'Paperino',
-        eta : 1.5,
-        colore : '#ffff00',
-        sesso : 'male'
+        name : "Portos",
+        age : 8,
+        color: "#000000",
+        gender: "male"
     },
     {
-        nome : 'Lola',
-        eta : 3,
-        colore : '#0000ff',
-        sesso : 'female'
+        name : "Sam",
+        age : 1.5,
+        color: "#AAA5A2",
+        gender: "male"
     },
     {
-        nome : 'Giulia',
-        eta : 8,
-        colore : '#00ffff',
-        sesso : 'female'
+        name : "Shiro",
+        age : 9,
+        color: "#753000",
+        gender: "female"
     },
     {
-        nome : 'Sara',
-        eta : 12,
-        colore : '#00ff00',
-        sesso : 'female'
+        name : "Minù",
+        age : 2,
+        color: "#B900F6",
+        gender: "female"
     }
 ];
 
+
 cats.forEach((element) => {
-    console.log(element.nome, element.colore);
+    document.getElementById("container").innerHTML +=
+    `
+    ${element.name} : <i class="fas fa-cat" style="color:${element.color}"></i>,
+    `;
+});
+
+document.getElementById("container").innerHTML += "<br/><br/>Milestone 2";
+
+const pink = "#E7120F";
+const blue = "#211CBB";
+
+const newCats = cats.map((element) => {
+
+    const{name, age, color, gender} = element;
+    const opacity = element.age / 9;
+
+    return {
+        name,
+        age,
+        color,
+        gender,
+        ribbon : {
+            color: (gender == "female") ? pink : blue,
+            opacity : opacity
+        }
+    }
+});
+
+// Funzione di stampa gattini in HTML
+const printCatsRibbon = (array) => {
+    array.forEach((element) => {
+        document.getElementById("container").innerHTML +=
+        `
+        <br/><br/>
+            ${element.name} : <i class="fas fa-cat" style="color:${element.color}"></i> 
+            <i class="fas fa-ribbon" style="color:${element.ribbon.color}; opacity:${element.ribbon.opacity}"></i>,
+        `;
+    });
+} 
+
+
+// Divisione per sesso
+
+// maschi
+const maleCats = newCats.filter((element) => {
+    return element.gender === "male";
+});
+
+document.getElementById("container").innerHTML += "<br/><br/>Maschi";
+printCatsRibbon(maleCats);
+
+// femmine
+const femaleCats = newCats.filter((element) => {
+    return element.gender === "female";
+});
+
+document.getElementById("container").innerHTML += "<br/><br/>Femmine";
+printCatsRibbon(femaleCats);
+
+
+// Milestone 3
+document.getElementById("container").innerHTML += "<br/><br/>Milestone 3";
+
+let catsFemaleMale = [...femaleCats, ...maleCats];
+
+const catsFemaleMaleZip = catsFemaleMale.map((element) => {
+   const {name, color, ribbon} = element;
+
+   return {
+        name,
+        color,
+        ribbon
+   } 
 });
 
 
-// Milestone 2
-// Dividere i gatti in due contenitori distinti in base al sesso e aggiungere a fianco di ogni gattino un fiocco colorato di rosa, se femmina, o di blu, se maschio. Il colore del fiocco deve essere più tenue se il gatto è più giovane, più scuro se il gatto è più vecchio.
-
-let catsMale = cats.filter((object) => {
-    return object.sesso == 'male';
-});
-
-let catsFemale = cats.filter((object) => {
-    return object.sesso == 'female';
-});
-
-console.log(catsMale);
-console.log(catsFemale);
-
-catsMale.forEach((object) => {
-    const {nome, sesso} = object;
-    document.getElementById('catsMale').innerHTML += `<li>${nome}, ${sesso} <i style="color: blue; height: 50px" class="fas fa-ribbon"></i></li>`;
-});
-
-catsFemale.forEach((object) => {
-    const {nome, sesso} = object;
-    document.getElementById('catsFemale').innerHTML += `<li>${nome}, ${sesso} <i style="color:pink" class="fas fa-ribbon"></i></li>`;
-});
+printCatsRibbon(catsFemaleMaleZip);
 
